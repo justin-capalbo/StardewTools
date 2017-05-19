@@ -12,7 +12,7 @@ namespace StardewTools
 
         static void Main(string[] args)
         {
-            string folder = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\docs\";
+            string folder = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\Docs\";
             var doc = XDocument.Load(folder + "Jectia.xml");
             XNamespace xsi = "http://www.w3.org/2001/XMLSchema-instance";
             
@@ -40,6 +40,9 @@ namespace StardewTools
 
                     //Visually, we need this to be y, x
                     caskData[Int32.Parse(y), Int32.Parse(x)] = String.Format("{0} {1}: {2}", quality, name, days);
+
+                    //Formatted with line break
+                    caskData[Int32.Parse(y), Int32.Parse(x)] = String.Format("\"{0} {1}\n{2}\"", quality, name, days);
 
                     //Console "Debugging"
                     Console.WriteLine("==Cask==\n" +
