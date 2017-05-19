@@ -21,10 +21,18 @@ namespace StardewTools
             {
                 string objType = (string)obj.Attribute(xsi + "type");
                 if (objType == "Cask")
-                { 
-                    var name = obj.Descendants("heldObject").Descendants("DisplayName").First();
-                    var days = obj.Descendants("daysToMature").First();
-                    Console.WriteLine("==Cask==\nItem: {0}\nDays Left: {1}\n", name, days);
+                {
+                    caskCount++;
+                    
+                    var location = obj.Descendants("tileLocation").First();
+                    var x = location.Descendants("X").First().Value;
+                    var y = location.Descendants("Y").First().Value;
+                    var name = obj.Descendants("heldObject").Descendants("DisplayName").First().Value;
+                    var days = obj.Descendants("daysToMature").First().Value;
+                    Console.WriteLine("==Cask==\n" +
+                                      "Located at: {0},{1}\n" + 
+                                      "Item: {2}\n" +
+                                      "Days Left: {3}\n", x, y, name, days);
                 }
             }
             Console.WriteLine("Total Casks: {0}", caskCount);
