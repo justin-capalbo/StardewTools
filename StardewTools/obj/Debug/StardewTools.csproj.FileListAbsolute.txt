@@ -1,0 +1,7 @@
+C:\Users\justin.capalbo\Documents\Visual Studio 2015\Projects\StardewTools\StardewTools\bin\Debug\StardewTools.exe.config
+C:\Users\justin.capalbo\Documents\Visual Studio 2015\Projects\StardewTools\StardewTools\bin\Debug\Docs\Jectia.xml
+C:\Users\justin.capalbo\Documents\Visual Studio 2015\Projects\StardewTools\StardewTools\bin\Debug\StardewTools.exe
+C:\Users\justin.capalbo\Documents\Visual Studio 2015\Projects\StardewTools\StardewTools\bin\Debug\StardewTools.pdb
+C:\Users\justin.capalbo\Documents\Visual Studio 2015\Projects\StardewTools\StardewTools\obj\Debug\StardewTools.csprojResolveAssemblyReference.cache
+C:\Users\justin.capalbo\Documents\Visual Studio 2015\Projects\StardewTools\StardewTools\obj\Debug\StardewTools.exe
+C:\Users\justin.capalbo\Documents\Visual Studio 2015\Projects\StardewTools\StardewTools\obj\Debug\StardewTools.pdb
