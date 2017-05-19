@@ -29,17 +29,23 @@ namespace StardewTools
                     var location = obj.Descendants("tileLocation").First();
                     var x = location.Descendants("X").First().Value;
                     var y = location.Descendants("Y").First().Value;
-                    var name = obj.Descendants("heldObject").Descendants("DisplayName").First().Value;
-                    var days = obj.Descendants("daysToMature").First().Value;
+                    var agingRate = Double.Parse(obj.Descendants("agingRate").First().Value);
+                    var dayNum = Math.Round(Double.Parse(obj.Descendants("daysToMature").First().Value) / agingRate, 2);
+                    var days = dayNum.ToString();
+
+                    //Data about what's in the cask
+                    var heldObject = obj.Descendants("heldObject");
+                    var name = heldObject.Descendants("DisplayName").First().Value;
+                    string quality = QualityConv(heldObject.Descendants("quality").First().Value);
 
                     //Visually, we need this to be y, x
-                    caskData[Int32.Parse(y), Int32.Parse(x)] = String.Format("{0}-{1}", name, days);
+                    caskData[Int32.Parse(y), Int32.Parse(x)] = String.Format("{0} {1}: {2}", quality, name, days);
 
                     //Console "Debugging"
                     Console.WriteLine("==Cask==\n" +
                                       "Located at: ({0},{1})\n" + 
-                                      "Item: {2}\n" +
-                                      "Days Left: {3}\n", x, y, name, days);
+                                      "Item: {4} {2}\n" +
+                                      "Days Left: {3}\n", x, y, name, days, quality);
                 }
             }
             Console.WriteLine("Total Casks: {0}", caskCount);
@@ -47,7 +53,19 @@ namespace StardewTools
             Console.ReadKey();
         }
 
-        public static void OutputCSV(string[,] data, string file = "test")
+        private static String QualityConv(string quality)
+        {
+            switch(quality)
+            {
+                case "0": return "N.";
+                case "1": return "S.";
+                case "2": return "G.";
+                case "3": return "I.";
+            }
+            return "";
+        }
+
+        private static void OutputCSV(string[,] data, string file = "test")
         {
             using (StreamWriter outfile = new StreamWriter(String.Format("C:/Temp/{0}.csv", file)))
             {
