@@ -17,6 +17,7 @@ namespace StardewTools
             XNamespace xsi = "http://www.w3.org/2001/XMLSchema-instance";
             
             int caskCount = 0;
+            string[,] caskData = new string[20,20];
             foreach (var obj in doc.Descendants("Object"))
             {
                 string objType = (string)obj.Attribute(xsi + "type");
@@ -24,19 +25,43 @@ namespace StardewTools
                 {
                     caskCount++;
                     
+                    //Data about our cask
                     var location = obj.Descendants("tileLocation").First();
                     var x = location.Descendants("X").First().Value;
                     var y = location.Descendants("Y").First().Value;
                     var name = obj.Descendants("heldObject").Descendants("DisplayName").First().Value;
                     var days = obj.Descendants("daysToMature").First().Value;
+
+                    //Visually, we need this to be y, x
+                    caskData[Int32.Parse(y), Int32.Parse(x)] = String.Format("{0}-{1}", name, days);
+
+                    //Console "Debugging"
                     Console.WriteLine("==Cask==\n" +
-                                      "Located at: {0},{1}\n" + 
+                                      "Located at: ({0},{1})\n" + 
                                       "Item: {2}\n" +
                                       "Days Left: {3}\n", x, y, name, days);
                 }
             }
             Console.WriteLine("Total Casks: {0}", caskCount);
+            OutputCSV(caskData, "casks");
             Console.ReadKey();
         }
+
+        public static void OutputCSV(string[,] data, string file = "test")
+        {
+            using (StreamWriter outfile = new StreamWriter(String.Format("C:/Temp/{0}.csv", file)))
+            {
+                for (int x = 0; x < data.GetLength(0); x++)
+                {
+                    string content = "";
+                    for (int y = 0; y < data.GetLength(1); y++)
+                    {
+                        content += data[x, y] + ",";
+                    }
+                    outfile.WriteLine(content);
+                }
+            }
+        }
+        
     }
 }
