@@ -9,50 +9,47 @@ namespace StardewTools
 {
     class Stardew
     {
+        private static XNamespace xsi = "http://www.w3.org/2001/XMLSchema-instance";
 
         static void Main(string[] args)
         {
             string folder = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\Docs\";
-            var doc = XDocument.Load(folder + "Jectia.xml");
-            XNamespace xsi = "http://www.w3.org/2001/XMLSchema-instance";
-            
-            int caskCount = 0;
-            string[,] caskData = new string[20,20];
+            var saveFile = XDocument.Load(folder + "Jectia.xml");
 
-            var caskObjects = doc.Descendants("Object").Where(o => (string)o.Attribute(xsi + "type") == "Cask").Distinct();
+            OutputBasement(saveFile);
+        }
 
-            foreach (var cask in caskObjects)
+        private static void OutputBasement(XDocument saveFile)
+        {
+            string[,] basement = new string[20, 20];
+            int dy = 1, dx = 5;
+
+            var caskObjects = saveFile.Descendants("Object").Where(o => (string)o.Attribute(xsi + "type") == "Cask");
+
+            List<Cask> casks = Cask.BuildCaskList(caskObjects);
+            foreach (Cask cask in casks)
             {
-                caskCount++;
-                    
-                //Data about our cask
-                var location = cask.Descendants("tileLocation").First();
-                var x = location.Descendants("X").First().Value;
-                var y = location.Descendants("Y").First().Value;
-                var agingRate = Double.Parse(cask.Descendants("agingRate").First().Value);
-                var dayNum = Math.Round(Double.Parse(cask.Descendants("daysToMature").First().Value) / agingRate, 2);
-                var days = dayNum.ToString();
-
-                //Data about what's in the cask
-                var heldObject = cask.Descendants("heldObject");
-                var name = heldObject.Descendants("DisplayName").First().Value;
-                string quality = QualityConv(heldObject.Descendants("quality").First().Value);
-
-                //Formatted with line break
-                caskData[Int32.Parse(y), Int32.Parse(x)] = String.Format("\"{0} {1}\n{2}\"", quality, name, days);
+                //Formatted with line break.  Y and X are inverted in the save data so we subtract dx from y and store the result in the first coordinate.
+                //dx and dy offset the result so the data is relative to cell A1 in Excel.
+                basement[cask.Y - dx, cask.X - dy] = cask.ToMiniString();
 
                 //Console "Debugging"
-                Console.WriteLine("==Cask==\n" +
-                                    "Located at: ({0},{1})\n" + 
-                                    "Item: {4} {2}\n" +
-                                    "Days Left: {3}\n", x, y, name, days, quality);                
+                Console.WriteLine(cask);
             }
-            Console.WriteLine("Total Casks: {0}", caskCount);
-            OutputCSV(caskData, "casks");
+
+            Console.WriteLine("Total Casks: {0}", casks.Count);
+            OutputCSV(basement, "casks");
+
+            Stardew.PauseConsole();
+        }
+
+        public static void PauseConsole()
+        {
+            Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
         }
 
-        private static String QualityConv(string quality)
+        public static String DisplayQuality(string quality)
         {
             switch(quality)
             {
@@ -64,9 +61,9 @@ namespace StardewTools
             return "";
         }
 
-        private static void OutputCSV(string[,] data, string file = "test")
+        private static void OutputCSV(Object[,] data, string csvname = "test")
         {
-            using (StreamWriter outfile = new StreamWriter(String.Format("C:/Temp/{0}.csv", file)))
+            using (StreamWriter outfile = new StreamWriter(String.Format("C:/Temp/{0}.csv", csvname)))
             {
                 for (int x = 0; x < data.GetLength(0); x++)
                 {
@@ -79,6 +76,6 @@ namespace StardewTools
                 }
             }
         }
-        
+
     }
 }
