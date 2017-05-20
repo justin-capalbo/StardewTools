@@ -18,38 +18,34 @@ namespace StardewTools
             
             int caskCount = 0;
             string[,] caskData = new string[20,20];
-            foreach (var obj in doc.Descendants("Object"))
+
+            var caskObjects = doc.Descendants("Object").Where(o => (string)o.Attribute(xsi + "type") == "Cask").Distinct();
+
+            foreach (var cask in caskObjects)
             {
-                string objType = (string)obj.Attribute(xsi + "type");
-                if (objType == "Cask")
-                {
-                    caskCount++;
+                caskCount++;
                     
-                    //Data about our cask
-                    var location = obj.Descendants("tileLocation").First();
-                    var x = location.Descendants("X").First().Value;
-                    var y = location.Descendants("Y").First().Value;
-                    var agingRate = Double.Parse(obj.Descendants("agingRate").First().Value);
-                    var dayNum = Math.Round(Double.Parse(obj.Descendants("daysToMature").First().Value) / agingRate, 2);
-                    var days = dayNum.ToString();
+                //Data about our cask
+                var location = cask.Descendants("tileLocation").First();
+                var x = location.Descendants("X").First().Value;
+                var y = location.Descendants("Y").First().Value;
+                var agingRate = Double.Parse(cask.Descendants("agingRate").First().Value);
+                var dayNum = Math.Round(Double.Parse(cask.Descendants("daysToMature").First().Value) / agingRate, 2);
+                var days = dayNum.ToString();
 
-                    //Data about what's in the cask
-                    var heldObject = obj.Descendants("heldObject");
-                    var name = heldObject.Descendants("DisplayName").First().Value;
-                    string quality = QualityConv(heldObject.Descendants("quality").First().Value);
+                //Data about what's in the cask
+                var heldObject = cask.Descendants("heldObject");
+                var name = heldObject.Descendants("DisplayName").First().Value;
+                string quality = QualityConv(heldObject.Descendants("quality").First().Value);
 
-                    //Visually, we need this to be y, x
-                    caskData[Int32.Parse(y), Int32.Parse(x)] = String.Format("{0} {1}: {2}", quality, name, days);
+                //Formatted with line break
+                caskData[Int32.Parse(y), Int32.Parse(x)] = String.Format("\"{0} {1}\n{2}\"", quality, name, days);
 
-                    //Formatted with line break
-                    caskData[Int32.Parse(y), Int32.Parse(x)] = String.Format("\"{0} {1}\n{2}\"", quality, name, days);
-
-                    //Console "Debugging"
-                    Console.WriteLine("==Cask==\n" +
-                                      "Located at: ({0},{1})\n" + 
-                                      "Item: {4} {2}\n" +
-                                      "Days Left: {3}\n", x, y, name, days, quality);
-                }
+                //Console "Debugging"
+                Console.WriteLine("==Cask==\n" +
+                                    "Located at: ({0},{1})\n" + 
+                                    "Item: {4} {2}\n" +
+                                    "Days Left: {3}\n", x, y, name, days, quality);                
             }
             Console.WriteLine("Total Casks: {0}", caskCount);
             OutputCSV(caskData, "casks");
