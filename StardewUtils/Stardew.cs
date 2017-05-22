@@ -5,7 +5,7 @@ using System.Xml.Linq;
 using System.IO;
 using System.Diagnostics;
 
-namespace StardewTools
+namespace Jastium.StardewTools.StardewUtils
 {
     class Stardew
     {

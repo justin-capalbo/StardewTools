@@ -5,7 +5,7 @@ using System.Xml.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StardewTools
+namespace Jastium.StardewTools.StardewUtils
 {
     class Cask
     {
@@ -41,8 +41,8 @@ namespace StardewTools
         public override string ToString()
         {
             return String.Format("==Cask==\n" +
-                                 "Located at: ({0},{1})\n" +
                                  "Item: {4} {2}\n" +
+                                 "Located at: ({0},{1})\n" +
                                  "Days Left: {3}\n", this.X, this.Y, this.ProductName, this.DaysToIridium, this.DisplayQuality);
         }
 

@@ -7,8 +7,8 @@
     <ProjectGuid>{69949852-9983-4C13-A0EC-C90ED941A425}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StardewTools</RootNamespace>
-    <AssemblyName>StardewTools</AssemblyName>
+    <RootNamespace>StardewUtils</RootNamespace>
+    <AssemblyName>StardewUtils</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
