@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Artisan",
+  "Author": "Justin Capalbo",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 0,
+    "PatchVersion": 0,
+    "Build": null
+  },
+  "Description": "A mod to help players manage their artisan goods and long term strategies.",
+  "UniqueID": "Justin Capalbo.Artisan",
+  "EntryDll": "Artisan.dll"
+}
